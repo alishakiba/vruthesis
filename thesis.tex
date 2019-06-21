@@ -1,0 +1,35 @@
+% راهنمای قابلیت‌های قابل استفاده در قالب پایان‌نامه
+% draft : تعیین خطاهای قالب‌بندی مانند بیرون رفتن از صفحه، عدم وجود مرجع و مانند آن
+% edit : مناسب برای زمان نگارش پایان‌نامه جهت اخذ تصحیح‌ها از اساتید محترم راهنما و مشاور
+% alg : فعال سازی الگوریتم ها
+% irandoc : آماده سازی نسخه نهایی بدون صفحات خالی
+% nofigures : بدون فهرست اشکال
+% notables : بدون فهرست جداول
+% nosymbols : بدون فهرست نمادها
+% phd : مناسب برای رساله‌ی دکتری
+% nowatermark : حذف عبارت آماده شده با کلاس vruthesis از صفحه‌ی بعد از بسم‌الله‌الرحمن‌الرحیم
+
+\documentclass[withpage,printonlyused,nosymbols]{vruthesis} % پایان‌نامه‌ی کارشناسی ارشد ریاضی بدون جدول نمادها
+%\documentclass[withpage,printonlyused,alg]{vruthesis} % پایان‌نامه‌ی کارشناسی ارشد با الگوریتم‌ها
+%\documentclass[withpage,printonlyused,alg,phd]{vruthesis} % رساله‌ی دکتری با الگوریتم‌ها
+%\documentclass[withpage,printonlyused]{vruthesis} % پایان‌نامه‌ی کارشناسی ارشد بدون الگوریتم‌ها
+%\documentclass[withpage,printonlyused,phd]{vruthesis} % رساله‌ی دکتری بدون الگوریتم‌ها
+% لطفا خطوط زیر را تغییر ندهید.
+\input{settings}
+% برای تعیین قالب ارجاع‌دهی؛ خط زیر را طبق راهنما، تغییر دهید.
+%\bibliographystyle{ieeetr-fa-vru} % برای گروه علوم کامپیوتر
+\bibliographystyle{acm-fa} % برای گروه ریاضی
+\begin{document}
+% % % % % % % % % % % % % % % % % % % % %
+	\input{data} % اطلاعات مرتبط با پایان‌نامه در این فایل قرار می‌گیرند.
+	\input{chapter1}
+	\input{chapter2}
+	\input{chapter3}
+	\input{chapter4}
+	\input{chapter5}
+	\appendix
+	\input{appendix1}
+	\input{appendix2}
+% از این قسمت به بعد را به هیچ وجه تغییر ندهید.
+	\input{finalpart}
+\end{document}

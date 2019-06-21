@@ -1,0 +1,182 @@
+% لطفا هیچ تغییری در این فایل صورت ندهید.
+
+\usepackage{subfig}
+\usepackage{hyperref} % PDF links
+\hypersetup{
+	colorlinks = true, %Colours links instead of ugly boxes
+	urlcolor = blue, %Colour for external hyperlinks
+	linkcolor = blue, %Colour of internal links
+	citecolor = red %Colour of citations
+}
+\usepackage[sanitizesort=false,sanitize={name=false},nomain,xindy,acronym,nonumberlist=true]{glossaries}
+\usepackage[extrafootnotefeatures]{xepersian}
+\usepackage[font={small},labelfont={normalsize,it}]{caption}
+\settextfont[Scale=1.2]{B Nazanin}
+\defpersianfont\minutesfont[Scale=1.2]{B Nazanin}
+\setlatintextfont{Times New Roman}
+\setdigitfont[Scale=1]{Yas}
+
+\SepMark{-}
+\newglossarystyle{fatoen}{%
+	\renewenvironment{theglossary}{}{}
+	\renewcommand*{\glsgroupskip}{\vskip \baselineskip}
+	\renewcommand*{\glsgroupheading}[1]{\subsection*{\glsgetgrouptitle{##1}}}
+	\renewcommand*{\glossentry}[2]{\noindent\glsentryname{##1}\dotfill\space \glsentrytext{##1}\par}
+}
+\newglossarystyle{entofa}{%
+	\renewenvironment{theglossary}{}{}
+	\renewcommand*{\glsgroupskip}{\vskip \baselineskip}
+	\renewcommand*{\glsgroupheading}[1]{\begin{LTR} \subsection*{\lr{\glsgetgrouptitle{##1}}} \end{LTR}}
+	\renewcommand*{\glossentry}[2]{\noindent\glsentrytext{##1}\dotfill\space \glsentryname{##1}\par}
+}
+\newglossarystyle{abbr}{%
+	\renewenvironment{theglossary}{}{}
+	\renewcommand*{\glsgroupskip}{\vskip \baselineskip}
+	\renewcommand*{\glsgroupheading}[1]{}
+	\renewcommand*{\glossentry}[2]{\noindent\glsentrytext{##1}\dotfill\space\Glsentrylong{##1}\par}
+	\renewcommand*{\acronymname}{\hfill\rl{اختصارات و نمادها}\hfill}
+}
+\newglossary[glg]{english}{gls}{glo}{\rl{واژه‌نامه انگلیسی به فارسی}}
+\newglossary[blg]{persian}{bls}{blo}{\rl{واژه‌نامه فارسی به انگلیسی}}
+%\newglossary[glg]{english}{gls}{glo}{\hfill\rl{واژه‌نامه انگلیسی به فارسی}\hfill}
+%\newglossary[blg]{persian}{bls}{blo}{\hfill\rl{واژه‌نامه فارسی به انگلیسی}\hfill}
+\makeglossaries
+\let\oldgls\gls
+\let\oldglspl\glspl
+\makeatletter
+\renewrobustcmd*{\gls}{\@ifstar\@msgls\@mgls}
+\newcommand*{\@mgls}[1] {\ifthenelse{\equal{\glsentrytype{#1}}{english}}{\oldgls{#1}\glsuseri{f-#1}}{\lr{\oldgls{#1}}}}
+\newcommand*{\@msgls}[1]{\ifthenelse{\equal{\glsentrytype{#1}}{english}}{\glstext{#1}\glsuseri{f-#1}}{\lr{\glsentryname{#1}}}}
+\renewrobustcmd*{\glspl}{\@ifstar\@msglspl\@mglspl}
+\newcommand*{\@mglspl}[1] {\ifthenelse{\equal{\glsentrytype{#1}}{english}}{\oldglspl{#1}\glsuseri{f-#1}}{\oldglspl{#1}}}
+\newcommand*{\@msglspl}[1]{\ifthenelse{\equal{\glsentrytype{#1}}{english}}{\glsplural{#1}\glsuseri{f-#1}}{\glsentryplural{#1}}}
+\makeatother
+\newcommand{\newword}[4]{
+	\newglossaryentry{#1}     {type={english},name={\lr{#2}},plural={#4},text={#3},description={}}
+	\newglossaryentry{f-#1} {type={persian},name={#3},text={\lr{#2}},description={}}
+}
+\defglsentryfmt[english]{\glsgenentryfmt\ifglsused{\glslabel}{}{\LTRfootnote{\glsentryname{\glslabel}}}}
+\defglsentryfmt[acronym]{\glsentryname{\glslabel}\ifglsused{\glslabel}{}{\LTRfootnote{\glsentrydesc{\glslabel}}}}
+\newcommand{\printabbreviation}{
+	\cleardoublepage
+	\pagestyle{empty}
+	\phantomsection
+	\baselineskip=.75cm
+	\setglossarystyle{abbr}
+	\begin{LTR}
+		\Oldprintglossary[type=acronym]	
+	\end{LTR}
+	\clearpage
+}
+\newcommand{\printacronyms}{\printabbreviation}
+\let\Oldprintglossary\printglossary
+\renewcommand{\printglossary}{
+	\let\appendix\relax
+	\clearpage
+	\phantomsection
+	\addcontentsline{toc}{chapter}{واژه نامه انگلیسی به فارسی}
+	\setglossarystyle{entofa}
+	\Oldprintglossary[type=english]
+	\clearpage
+	\phantomsection
+	\addcontentsline{toc}{chapter}{واژه نامه فارسی به انگلیسی}
+	\setglossarystyle{fatoen}
+	\Oldprintglossary[type=persian]
+}
+\input{gloss}
+\input{acronym}
+
+\DefineVerbatimEnvironment{myverbatim}{Verbatim}{commandchars=+\[\]}
+\DefineVerbatimEnvironment{mynewverbatim}{Verbatim}{commandchars=+|\$}
+
+\makeatletter
+	\newcommand*{\@thechapapp}{\@tartibi\c@chapter}
+	\bidi@appto\appendix{\gdef\@thechapapp{\@harfi\c@chapter}}
+
+	% ترتیبی کردن شماره فصل‌ها در فهرست مطالب در صورت استفاده از بسته hyperref
+	\bidi@patchcmd{\Hy@org@chapter}{%
+		\addcontentsline{toc}{chapter}%
+		{\protect\numberline{\thechapter}#1}%
+	}{%
+		\addcontentsline{toc}{chapter}%
+		{\protect\numberline{\@chapapp~\@thechapapp:}#1}%
+	}{\typeout{We succeded in redefining \string\@chapter}}
+	{\typeout{We failed in redefining \string\@chapter}}
+	% اضافه کردن خط تیره بعد از شماره‌ فصل و بخش در متن
+	%\renewcommand{\thesection}{\arabic{chapter}\@SepMark\arabic{section}\@SepMark}
+	%\renewcommand{\thesubsection}{\arabic{chapter}\@SepMark\arabic{section}\@SepMark\arabic{subsection}\@SepMark}
+	% اضافه کردن خط تیره بعد از شماره‌ها در فهرست مطالب و فهرست شکل ها و فهرست جدول ها
+	\renewcommand{\cftsecaftersnum}{\@SepMark}%
+	\renewcommand{\cftsubsecaftersnum}{\@SepMark}%
+	\renewcommand{\cftfigaftersnum}{\@SepMark}%
+	\renewcommand{\cfttabaftersnum}{\@SepMark}%
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% زیاد کردن فاصله بین شماره‌ها و عنوان‌ها در فهرست مطالب
+\setlength\cftchapnumwidth{4.5em}
+\setlength\cftfignumwidth{3em}
+\setlength\cfttabnumwidth{3em}
+\setlength\cftsecnumwidth{2.5em}
+\setlength\cftsubsecnumwidth{3.5em}
+% زیاد کردن تورفتگی شماره‌ها و عنوان‌ها در فهرست مطالب
+\setlength\cftsecindent{1.5em}
+\setlength\cftsubsecindent{2.5em}
+
+\renewcommand{\cfttoctitlefont}{\hspace*{\fill}\large\bfseries}
+\renewcommand{\cftaftertoctitle}{\hspace*{\fill}}
+\renewcommand{\cftlottitlefont}{\hspace*{\fill}\large\bfseries}
+\renewcommand{\cftafterlottitle}{\hspace*{\fill}}
+\renewcommand{\cftloftitlefont}{\hspace*{\fill}\large\bfseries}
+\renewcommand{\cftafterloftitle}{\hspace*{\fill}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% حروفی کردن شماره فصول و تغییر اندازه فونت فصول و بخش ها و زیر بخش ها
+\titleformat{\chapter}[display]
+  {\normalfont\large\bfseries}{\raggedright\chaptertitlename\ \tartibi{chapter}}{0pt}{\large\raggedright}
+\titlespacing{\chapter}{2pc}{4cm}{1cm}[2pc]
+\titleformat{\section}[block]{\bf{\normalfont\normalsize\bfseries}}{\thesection}{1em}{}
+\titleformat{\subsection}[block]{\bf{\normalfont\small\bfseries}}{\thesubsection}{1em}{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%حذف سطر اضافی بین دو مرجع متوالی در قسمت مراجع
+\let\OLDthebibliography\thebibliography
+\renewcommand\thebibliography[1]{
+	\OLDthebibliography{#1}
+	\setlength{\parskip}{0pt}
+	\setlength{\itemsep}{0pt plus 0.3ex}
+}
+% ترتیبی کردن شماره فصل در سربرگ صفحات فرد
+\renewcommand{\chaptermark}[1]{%
+	\markboth{
+		فصل \tartibi{chapter}~:~#1
+	}{}
+}
+\makeatletter
+	\bidi@patchcmd{\@harfi}{آ}{الف}
+	{\typeout{Succeeded in changing `آ` into `الف`}}
+	{\typeout{Failed in changing `آ` into `الف`}}
+	\bidi@patchcmd{\@harfi}{ه}{هـ}
+	{\typeout{Succeeded in changing `ه` into `هـ`}}
+	{\typeout{Failed in changing `ه` into `هـ`}}
+\makeatother
+
+\let\oldAppendix\appendix
+\renewcommand{\appendix}{
+	\titleformat{\chapter}[display]
+	{\normalfont\large\bfseries\flushleft}{\chaptertitlename\ \harfi{chapter}}{0pt}{\large}
+	\oldAppendix
+	\ifnofigures\else 
+		\renewcommand{\thefigure}{\harfi{chapter}-\arabic{figure}} 
+	\fi 
+	\ifnotables\else 
+		\renewcommand{\thetable}{\harfi{chapter}-\arabic{table}} 
+	\fi
+	\if@alg
+		\renewcommand{\thealgorithm}{\harfi{chapter}-\arabic{algorithm}} 
+	\fi
+}
+
+\setlength{\parskip}{0cm}
+
+\renewcommand\citedash{\lr{--}}
+

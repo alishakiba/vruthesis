@@ -1,0 +1,17 @@
+v0.2 --> v0.3
+	modified:   settings.tex
+	modified:   thesis.pdf
+	modified:   thesis.tex
+	modified:   vruthesis.cls
+	modified:   fonts
+v0.1 --> v0.2
+	modified:   chapter1.tex
+	modified:   chapter4.tex
+	new file:   gradeen.docx
+	modified:   gradeen.pdf
+	new file:   gradefa.docx
+	modified:   gradefa.pdf
+	modified:   settings.tex
+	modified:   thesis.pdf
+	modified:   thesis.tex
+	modified:   vruthesis.cls
